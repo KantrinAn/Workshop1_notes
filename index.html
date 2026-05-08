@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WOW PM Bootcamp — Воркшоп 1: Product Thinking</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #15181f;
+    --surface2: #1c2030;
+    --border: #252a38;
+    --accent: #6c63ff;
+    --accent2: #ff6b9d;
+    --accent3: #43e8c8;
+    --accent4: #ffc857;
+    --text: #e8ecf4;
+    --muted: #8891aa;
+    --tag-bg: #1e2235;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ─────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #0d0f14 0%, #1a1040 50%, #0d0f14 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 32px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 480px; height: 480px;
+    background: radial-gradient(ellipse, rgba(108,99,255,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--tag-bg);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(24px, 4vw, 44px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #e8ecf4 30%, #6c63ff 70%, #ff6b9d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto 28px;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-meta span b { color: var(--text); }
+
+  /* ── LAYOUT ───────────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    max-width: 1140px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  /* ── SIDEBAR ──────────────────────────────── */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .sidebar-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 20px 12px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all .18s;
+    border-left: 2px solid transparent;
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: var(--surface); color: var(--text); }
+  .nav-item.active {
+    border-left-color: var(--accent);
+    background: rgba(108,99,255,.08);
+    color: var(--text);
+  }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN ─────────────────────────────────── */
+  .main { padding: 40px 40px 80px; }
+
+  /* ── SECTION ──────────────────────────────── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .section-header p { color: var(--muted); font-size: 14px; }
+
+  /* ── CARDS ────────────────────────────────── */
+  .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-bottom: 28px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color .18s, transform .18s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── CALLOUT ──────────────────────────────── */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .callout.purple { background: rgba(108,99,255,.1); border: 1px solid rgba(108,99,255,.25); }
+  .callout.pink   { background: rgba(255,107,157,.1); border: 1px solid rgba(255,107,157,.25); }
+  .callout.teal   { background: rgba(67,232,200,.1);  border: 1px solid rgba(67,232,200,.25); }
+  .callout.yellow { background: rgba(255,200,87,.1);  border: 1px solid rgba(255,200,87,.25); }
+
+  /* ── ACCORDION ────────────────────────────── */
+  .accordion { margin-bottom: 12px; }
+  .accordion-head {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background .15s;
+    user-select: none;
+  }
+  .accordion-head:hover { background: var(--surface2); }
+  .accordion-head.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; background: var(--surface2); }
+  .accordion-arrow { transition: transform .2s; color: var(--muted); }
+  .accordion-head.open .accordion-arrow { transform: rotate(180deg); }
+  .accordion-body {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 16px 18px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .accordion-body.open { display: block; }
+
+  /* ── CHECKLIST ────────────────────────────── */
+  .checklist { list-style: none; margin-bottom: 20px; }
+  .checklist li {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+    font-size: 11px;
+  }
+  .check-box.checked { background: var(--accent); border-color: var(--accent); }
+
+  /* ── TAG ──────────────────────────────────── */
+  .tag {
+    display: inline-block;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin: 2px;
+  }
+  .tag.purple { border-color: rgba(108,99,255,.4); color: #b0aaff; }
+  .tag.pink   { border-color: rgba(255,107,157,.4); color: #ffb0cc; }
+  .tag.teal   { border-color: rgba(67,232,200,.4);  color: #90f0df; }
+  .tag.yellow { border-color: rgba(255,200,87,.4);  color: #ffe09a; }
+
+  /* ── TABLE ────────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px; }
+  th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ── QUOTE ────────────────────────────────── */
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 12px 20px;
+    margin: 20px 0;
+    background: rgba(108,99,255,.06);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ── PROGRESS ─────────────────────────────── */
+  .progress-bar-wrap { background: var(--surface2); border-radius: 8px; overflow: hidden; height: 8px; margin: 6px 0 18px; }
+  .progress-bar { height: 100%; border-radius: 8px; transition: width 1s ease; }
+
+  /* ── INSIGHTS GRID ────────────────────────── */
+  .insights { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 20px; }
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .insight-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .insight-card.purple::before { background: var(--accent); }
+  .insight-card.pink::before   { background: var(--accent2); }
+  .insight-card.teal::before   { background: var(--accent3); }
+  .insight-card.yellow::before { background: var(--accent4); }
+  .insight-name { font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .06em; }
+  .insight-text { font-size: 13px; line-height: 1.6; }
+
+  /* ── STEPS ────────────────────────────────── */
+  .steps { margin: 20px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .step-content p { font-size: 13px; color: var(--muted); }
+
+  h3 { font-size: 16px; font-weight: 600; margin: 24px 0 12px; }
+  p { margin-bottom: 14px; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); padding: 16px 0; }
+    .main { padding: 24px 16px 60px; }
+    .hero { padding: 36px 16px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">WOW PM Bootcamp 2.0</div>
+  <h1>Воркшоп 1<br>Product Thinking</h1>
+  <p class="hero-sub">Продуктове мислення: специфікації, дизайн та AI-інструменти для проєктних менеджерів</p>
+  <div class="hero-meta">
+    <span>🕐 <b>~2.5 год</b></span>
+    <span>👩‍💻 <b>Продукт: Crazy.com</b></span>
+    <span>🧩 <b>Фасилітатор: Аня</b></span>
+    <span>🤖 <b>AI + Специфікації</b></span>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Зміст</div>
+    <a class="nav-item active" onclick="showSection('overview')">
+      <div class="nav-dot" style="background:#6c63ff"></div>Огляд воркшопу
+    </a>
+    <a class="nav-item" onclick="showSection('product')">
+      <div class="nav-dot" style="background:#ff6b9d"></div>Продукт Crazy.com
+    </a>
+    <a class="nav-item" onclick="showSection('bad-spec')">
+      <div class="nav-dot" style="background:#ffc857"></div>Аналіз «поганої» спеки
+    </a>
+    <a class="nav-item" onclick="showSection('design-review')">
+      <div class="nav-dot" style="background:#43e8c8"></div>Рев'ю дизайну
+    </a>
+    <a class="nav-item" onclick="showSection('screen-flow')">
+      <div class="nav-dot" style="background:#a78bfa"></div>Screen Flow
+    </a>
+    <a class="nav-item" onclick="showSection('good-spec')">
+      <div class="nav-dot" style="background:#6c63ff"></div>Якісна специфікація
+    </a>
+    <a class="nav-item" onclick="showSection('ai-tools')">
+      <div class="nav-dot" style="background:#ff6b9d"></div>AI-інструменти
+    </a>
+    <a class="nav-item" onclick="showSection('retro')">
+      <div class="nav-dot" style="background:#43e8c8"></div>Ретроспектива
+    </a>
+    <a class="nav-item" onclick="showSection('checklist')">
+      <div class="nav-dot" style="background:#ffc857"></div>Чеклист PM
+    </a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ═══════════ OVERVIEW ═══════════ -->
+    <section id="overview" class="section active">
+      <div class="section-header">
+        <h2>🗺 Огляд воркшопу</h2>
+        <p>Що, навіщо і як — за 3 хвилини</p>
+      </div>
+
+      <div class="callout purple">
+        <span class="callout-icon">🎯</span>
+        <div><strong>Головна мета:</strong> навчитися розрізняти якісні та неякісні специфікації, та зрозуміти, як PM може покращити взаємодію з дизайнером (особливо з джун-дизайнером) і уникнути втрати часу команди.</div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">📄</div>
+          <h3>Специфікація як основа</h3>
+          <p>Яка спека — такий і результат. Від якості ТЗ залежить якість дизайну та розробки.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎨</div>
+          <h3>Робота з дизайнером</h3>
+          <p>Як PM має допомагати дизайнеру зрозуміти продукт і не "працювати всліпу".</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <h3>AI як помічник</h3>
+          <p>Claude, ChatGPT, Mermaid-діаграми — як автоматизувати рутину і підвищити якість документації.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔄</div>
+          <h3>User Flow</h3>
+          <p>Screen flow як ключовий артефакт для дизайнерів-початківців, щоб не "вигадувати з нуля".</p>
+        </div>
+      </div>
+
+      <h3>Структура воркшопу</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Знайомство команди</h4>
+            <p>Айс-брейкер: стікери з фактами про кожного учасника на Miro. Команда дуже різноманітна: продукт, фінтех, EdTech, DevOps, енергетика.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Онбординг у продукт Crazy.com</h4>
+            <p>Огляд AI-платформи: B2B та B2C сегменти, ринки, типи контенту (зображення, відео, аудіо, текст).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Аналіз "поганої" специфікації</h4>
+            <p>Реальна спека, яку написав СТО у ChatGPT. Команда знаходить проблеми самостійно.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Рев'ю дизайну в Figma</h4>
+            <p>Коментування реального дизайну, що вийшов із поганої спеки. Пошук проблем.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Вправа: Screen Flow</h4>
+            <p>Командне заповнення пропущених екранів у секвенсі. Розуміння важливості логічного зв'язку.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Updated специфікація + Best practices</h4>
+            <p>Аналіз покращеної спеки. Формування принципів якісного ТЗ.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <h4>Mermaid діаграми через AI</h4>
+            <p>Генерація user flow через Claude/ChatGPT. Вставка в FigJam. Практика.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">8</div>
+          <div class="step-content">
+            <h4>Ретроспектива та інсайти</h4>
+            <p>Що беруть з собою учасники. Питання. Домашня робота: HTML-конспект.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ PRODUCT ═══════════ -->
+    <section id="product" class="section">
+      <div class="section-header">
+        <h2>🚀 Продукт Crazy.com</h2>
+        <p>AI-платформа для генерації контенту — контекст для воркшопу</p>
+      </div>
+
+      <div class="callout teal">
+        <span class="callout-icon">💡</span>
+        <div>Crazy.com — стартап, де Аня більше року була Product Owner. Нещодавно закрився через брак бюджету, але залишається <strong>ідеальним кейсом для навчання</strong>.</div>
+      </div>
+
+      <h3>Що робить платформа</h3>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🖼</div>
+          <h3>Зображення</h3>
+          <p>Генерація зображень за допомогою різних AI-моделей.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎬</div>
+          <h3>Відео</h3>
+          <p>Генерація коротких відеороликів.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎵</div>
+          <h3>Аудіо</h3>
+          <p>Генерація музики та звукових доріжок.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">✍️</div>
+          <h3>Тексти</h3>
+          <p>Генерація текстового контенту.</p>
+        </div>
+      </div>
+
+      <h3>B2C та B2B сегменти</h3>
+      <table>
+        <thead>
+          <tr><th>Сегмент</th><th>Хто</th><th>Характеристика</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag teal">B2C</span></td>
+            <td>Контент-крієйтори, маркетологи, SMM-щики, дизайнери, відеомейкери, малий бізнес, звичайні користувачі</td>
+            <td>Кілька платних планів від free до premium. Чим більше фіч — тим вища ціна.</td>
+          </tr>
+          <tr>
+            <td><span class="tag purple">B2B</span></td>
+            <td>Рекламні та креативні агенції, performance-marketing агенції, рітейл-бренди, фаундери стартапів, HR / employer branding, ентерпрайз</td>
+            <td>Team/Startup план з командним функціоналом. Custom pricing.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Додаткові характеристики</h3>
+      <div class="callout yellow">
+        <span class="callout-icon">🌍</span>
+        <div>
+          <strong>Ринки:</strong> США, Європа, Корея<br>
+          <strong>Платформа:</strong> Web-only (без мобільного застосунку)<br>
+          <strong>Додаткові продукти:</strong> Crazy Camera (AR-фільтри), Learn &amp; Connect (навчання контент-генерації)
+        </div>
+      </div>
+
+      <blockquote>
+        "З тим, як Anthropic і OpenAI зараз шурують, дуже складно будувати щось схоже і залишатися на плаву." — Аня про закриття стартапу
+      </blockquote>
+    </section>
+
+    <!-- ═══════════ BAD SPEC ═══════════ -->
+    <section id="bad-spec" class="section">
+      <div class="section-header">
+        <h2>⚠️ Аналіз «поганої» специфікації</h2>
+        <p>Реальний кейс: спека від СТО, написана в ChatGPT за кілька хвилин</p>
+      </div>
+
+      <div class="callout pink">
+        <span class="callout-icon">🔥</span>
+        <div><strong>Контекст:</strong> СТО дуже швидко написав специфікацію для сторінки My Profile (для корейського ринку) за допомогою ChatGPT з мінімальним промтом. Ця спека потрапила до джун-дизайнерки-кореянки. Результат — хаос.</div>
+      </div>
+
+      <h3>Проблеми, які знайшла команда</h3>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          📋 Немає візуального контексту <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Є посилання на Figma, але немає ні скринів, ні вайрфреймів, ні навіть схематичних описів лейауту прямо в документі. Дизайнер не знає, де що має розміщуватись.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🔘 Відсутні описи станів елементів <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Немає опису станів кнопок (hover, active, disabled, error) та інших UI-елементів. Skeleton loaders для карток і таблиць? Джун не може здогадатись сам. Відповідальність PM — допомогти розібратись.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🗂 Немає пріоритизації user stories <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Всі user stories виглядають однаково важливими. Дизайнер/розробник не знає, що є MVP, а що nice-to-have. (Хоча у цьому конкретному кейсі пріоритизація була зроблена по сторінках, але не всередині сторінки.)
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          ❌ Немає edge-кейсів <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Що показується, якщо кредити рівні нулю? Якщо дані не завантажились? Якщо 10 разів швидко натиснути кнопку? Що, якщо відкрити 10 вкладок одночасно і генерувати? Всі неочевидні ситуації — в ТЗ.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          📝 Відсутні copy-документи та тексти <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Немає таблиць з текстами: тултипи, кнопки, повідомлення про помилки, empty states, placeholder-тексти. Зараз це можна генерувати AI за 2 секунди і прикріплювати до user stories.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🌍 Відсутня локалізація <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Специфікація для корейського ринку, але немає жодних даних про локалізацію: мовні особливості, RTL/LTR, специфіка ієрогліфів, корейські платіжні системи тощо.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🏷 Поверхневі описи функцій <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Написано "хочу це, зробіть це", без деталей: як саме, де, що після кліку, яке підтвердження, який error-стан. Наприклад, зміна пароля — є "let's discuss" без уточнення способу верифікації.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🎯 Немає цілей та метрик <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Відсутні цифри та KPI: чого хочемо досягти цією фічею? Як потім порахуємо, що вона працює чи ні? Acceptance criteria без цілей — не дозволяє виміряти успіх.
+        </div>
+      </div>
+
+      <h3>Ключові визначення</h3>
+      <table>
+        <thead><tr><th>Термін</th><th>Визначення</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Acceptance Criteria</strong></td>
+            <td>Критерії прийняття конкретної user story. Відрізняються для кожної сторії. Це основне для уточнення очікувань.</td>
+          </tr>
+          <tr>
+            <td><strong>Definition of Done</strong></td>
+            <td>Організаційні критерії завершення по проекту: баги закриті, смоук-тест, регресія, задеплоєно. Однакові для всіх сторій.</td>
+          </tr>
+          <tr>
+            <td><strong>Definition of Ready</strong></td>
+            <td>Критерії, за яких user story готова до взяття в роботу: Discovery проведено, макапи додано, всі стани описано.</td>
+          </tr>
+          <tr>
+            <td><strong>Edge Case</strong></td>
+            <td>Крайній / кутовий випадок. Щось, що зламає продукт за нестандартних умов. Потрібно описувати в спеці.</td>
+          </tr>
+          <tr>
+            <td><strong>Bus Factor</strong></td>
+            <td>Кількість людей, яких не можна втратити без зупинки проекту. Має бути &gt;1. Хороша спека знижує bus factor.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════ DESIGN REVIEW ═══════════ -->
+    <section id="design-review" class="section">
+      <div class="section-header">
+        <h2>🎨 Рев'ю дизайну</h2>
+        <p>Що виходить, коли поганій спеці дати джун-дизайнеру</p>
+      </div>
+
+      <div class="callout yellow">
+        <span class="callout-icon">👩‍🎨</span>
+        <div><strong>Контекст:</strong> Дизайнерка — кореянка, перший комерційний проект, без сеньора поруч. Команда витратила багато часу, поки дизайн "встав на рельси".</div>
+      </div>
+
+      <h3>Проблеми в дизайні, що їх знайшли учасниці</h3>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🔗 Немає зв'язку між екранами <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Основна проблема: скріни не пов'язані між собою. Немає screen flow. Попапи "лежать" поза контекстом (out of nowhere). Перше питання розробників: "а цей екран — після якого?"
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🔘 Незрозуміла логіка чекбоксів <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          На деяких екранах є чекбокси, але незрозуміло, що відбудеться після їх виділення. Яка дія буде активована? Чи це впливає на щось іще?
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          📄 Непідписані сторінки <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Незрозуміло, яка сторінка за що відповідає. Дизайнер не дав назви екранам — команда сама не може орієнтуватись.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          ❓ Незрозуміло, що після кнопки <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Багато кнопок без уточнення: що відкриється — попап, нова сторінка, bottom sheet? Наприклад, кнопка "Refill" — де відобразиться наступний крок?
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          👤 Порожній профіль не задизайнений <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Немає дизайну для blank state (порожнього стану). Дизайнери часто забувають показати, як виглядає сторінка, коли там ще немає контенту.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🖼 Немає екрану зміни платіжного методу <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Не продизайнований екран зміни Payment Method — кнопка є, але що за нею — невідомо.
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <span class="callout-icon">💡</span>
+        <div><strong>Висновок Ані:</strong> Дизайнерка вважала, що зробила окремі елементи, а команда "знає, куди їх поставити". Це хибне припущення. PM має забезпечити клікабельний прототип або хоча б screen flow.</div>
+      </div>
+
+      <h3>Що міг зробити PM — варіанти від команди</h3>
+      <div class="insights">
+        <div class="insight-card purple">
+          <div class="insight-name">Юля</div>
+          <div class="insight-text">Прописати чітку послідовність скрінів. Надати референси або прототип, щоб ввести дизайнера в контекст.</div>
+        </div>
+        <div class="insight-card pink">
+          <div class="insight-name">Оксана</div>
+          <div class="insight-text">Переглянути спеку перед передачею. Вимагати UIKit, описи всіх станів кнопок, зразки готових робіт.</div>
+        </div>
+        <div class="insight-card teal">
+          <div class="insight-name">Анастасія</div>
+          <div class="insight-text">Discovery-сесія з клієнтом. Пріоритизація. Definition of Done. Додаткові уточнюючі питання.</div>
+        </div>
+        <div class="insight-card yellow">
+          <div class="insight-name">Катя</div>
+          <div class="insight-text">Регулярні сесії з дизайнером. Менторство від сеньора. Обов'язковий запис дзвінків. Культурна адаптація фідбеку.</div>
+        </div>
+        <div class="insight-card purple">
+          <div class="insight-name">Аня (ключове)</div>
+          <div class="insight-text">Обов'язковий онбординг дизайнера як користувача продукту. Презентація розуміння продукту на початку роботи.</div>
+        </div>
+      </div>
+
+      <blockquote>
+        "Ми могли б зробити в процесах обов'язкове онбординг дизайнера на продукт як користувача, щоб він обов'язково проходив сесію тестування хоча б раз на початку." — Аня
+      </blockquote>
+
+      <div class="callout teal">
+        <span class="callout-icon">🌏</span>
+        <div><strong>Культурний нюанс (The Culture Map — Ерін Мейер):</strong> Дизайнерка-кореянка сприймала будь-який негативний фідбек як знецінення. Рішення: починати завжди з похвали реальних досягнень, потім — зони покращення. Корейці дуже працеспрямовані, і критика для них = "нічого не зробив".</div>
+      </div>
+    </section>
+
+    <!-- ═══════════ SCREEN FLOW ═══════════ -->
+    <section id="screen-flow" class="section">
+      <div class="section-header">
+        <h2>🔀 Screen Flow</h2>
+        <p>Ключовий артефакт, якого не вистачало в проекті</p>
+      </div>
+
+      <div class="callout purple">
+        <span class="callout-icon">📊</span>
+        <div><strong>Screen Flow</strong> — це послідовність екранів з логічними зв'язками між ними. Показує: звідки користувач потрапляє на кожен екран, що відбувається після кожної дії, де з'являються попапи і модальні вікна.</div>
+      </div>
+
+      <h3>Чому це допомогло б в кейсі</h3>
+      <p>Дизайнерка не тестувала продукт як користувач і не мала screen flow → працювала "всліпу" → окремі елементи без зв'язку → розробники не знають порядку розробки.</p>
+
+      <h3>Практична вправа: що не вистачало</h3>
+      <p>Команди в breakout rooms мали заповнити пропущені екрани в секвенсі для сторінки <strong>My Profile</strong>. Обидві команди вгадали більшість — що підтвердило: логічний флоу можна вивести з здорового глузду, якщо знаєш продукт.</p>
+
+      <h3>Основні секції screen flow для My Profile</h3>
+      <table>
+        <thead><tr><th>Секція</th><th>Ключові екрани</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>👤 Профіль</td>
+            <td>Edit username, Bio, Profile Picture (з підтвердженням та error state)</td>
+          </tr>
+          <tr>
+            <td>💳 Білінг</td>
+            <td>Current Plan → Change Plan → Confirmation; Add/Delete Billing Method; Refill Credits (модальне вікно)</td>
+          </tr>
+          <tr>
+            <td>📄 Інвойси</td>
+            <td>Page with all invoices / Blank state (якщо ще немає); Multi-select invoices</td>
+          </tr>
+          <tr>
+            <td>🗂 My Assets</td>
+            <td>Filter by Images/Video/Audio/Text; Search; Continue chat; Show Blank State</td>
+          </tr>
+          <tr>
+            <td>👥 Explore Creators</td>
+            <td>Search by Username; Filter creator assets; Show creator page with no assets</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout teal">
+        <span class="callout-icon">🤖</span>
+        <div><strong>Лайфхак:</strong> Screen Flow можна генерувати AI! Дайте Claude або ChatGPT специфікацію → отримайте Mermaid-код → вставте у FigJam → готова editable діаграма. Детальніше в розділі AI-інструменти.</div>
+      </div>
+
+      <div class="callout yellow">
+        <span class="callout-icon">💎</span>
+        <div><strong>Правило blank state:</strong> Дизайнери часто забувають показувати порожній вигляд сторінок. PM має явно прописувати це в спеці: "показати blank state, якщо немає контенту".</div>
+      </div>
+    </section>
+
+    <!-- ═══════════ GOOD SPEC ═══════════ -->
+    <section id="good-spec" class="section">
+      <div class="section-header">
+        <h2>✅ Якісна специфікація</h2>
+        <p>Оновлена спека, що вийшла з промту в Claude — та best practices</p>
+      </div>
+
+      <div class="callout teal">
+        <span class="callout-icon">✨</span>
+        <div><strong>Результат:</strong> після рефакторингу спеки через Claude спека стала меншою за обсягом, але набагато структурованішою і читабельнішою. Після неї з'явився адекватний дизайн.</div>
+      </div>
+
+      <h3>Що змінилось — інсайти команди</h3>
+      <div class="insights">
+        <div class="insight-card teal">
+          <div class="insight-name">Настя</div>
+          <div class="insight-text">Кожен блок детально описаний з чіткими вимогами і аутпутами. Конкретні деталі: підтримувані формати іміджів, умови тощо.</div>
+        </div>
+        <div class="insight-card purple">
+          <div class="insight-name">Катя</div>
+          <div class="insight-text">Тексти екранів включені. Документація зрозуміла будь-кому в команді — замовнику, розробнику, дизайнеру. Легкий онбординг нових людей.</div>
+        </div>
+        <div class="insight-card pink">
+          <div class="insight-name">Друга Настя</div>
+          <div class="insight-text">Зрозуміло що після чого йде. Відразу додані скріни-приклади. Детальний опис кожної кнопки та дії.</div>
+        </div>
+        <div class="insight-card yellow">
+          <div class="insight-name">Юля</div>
+          <div class="insight-text">Детально описаний UI: що де знаходиться. Чітка структура замість "полотна тексту". Всі можливі стейти з копі і сценаріями.</div>
+        </div>
+        <div class="insight-card purple">
+          <div class="insight-name">Оксана</div>
+          <div class="insight-text">Edge-кейси включені. Питання на обговорення виділені окремо. Скрін-лінки. Готові тексти для copy-paste в дизайн.</div>
+        </div>
+      </div>
+
+      <h3>Best Practices для специфікацій</h3>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🏗 Структура і читабельність <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          <ul style="padding-left:20px; color: var(--muted); font-size:14px; line-height:2">
+            <li>Розбивка на логічні секції з заголовками</li>
+            <li>Таблиці для порівняльних даних — легше читаються</li>
+            <li>Посилання на скріни та прототипи прямо в документі</li>
+            <li>Виділяти відкриті питання (Open Questions) окремим блоком</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🎭 Опис станів UI <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          <ul style="padding-left:20px; color: var(--muted); font-size:14px; line-height:2">
+            <li>Default стан (нормальний вигляд)</li>
+            <li>Hover, Active, Disabled стани кнопок</li>
+            <li>Loading / Skeleton Loader стан</li>
+            <li>Error стан (де відображається помилка — toast, inline, modal?)</li>
+            <li>Empty / Blank стан (коли немає контенту)</li>
+            <li>Success стан після дії</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          📖 Copy-документ <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          Таблиця з усіма текстами, які з'являються в UI:
+          <ul style="padding-left:20px; margin-top:8px; color: var(--muted); font-size:14px; line-height:2">
+            <li>Заголовки сторінок і секцій</li>
+            <li>Placeholder-тексти полів</li>
+            <li>Повідомлення про помилки (з варіантами під різні помилки)</li>
+            <li>Empty state тексти</li>
+            <li>Тексти кнопок і тултипів</li>
+          </ul>
+          <p style="margin-top:10px; font-size:13px; color:var(--muted)">💡 Зараз це генерується AI за 2 секунди!</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          🔢 Функціональні та нефункціональні вимоги <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Функціональні</strong> — як це працює: натиснути кнопку → отримати результат.<br><br>
+          <strong>Нефункціональні</strong> — як добре це працює:
+          <ul style="padding-left:20px; margin-top:8px; color: var(--muted); font-size:14px; line-height:2">
+            <li>Швидкість завантаження</li>
+            <li>Безпека (авторизація, валідація)</li>
+            <li>Доступність (accessibility)</li>
+            <li>Продуктивність під навантаженням</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <span class="callout-icon">🌟</span>
+        <div><strong>Головний принцип від Ані:</strong> Спека має бути <strong>універсальною</strong> — зрозумілою для всієї команди: дизайнера, розробника, тестувальника, клієнта і нового учасника. Не може бути "спека для дизайнера" окремо від "спеки для розробника".</div>
+      </div>
+    </section>
+
+    <!-- ═══════════ AI TOOLS ═══════════ -->
+    <section id="ai-tools" class="section">
+      <div class="section-header">
+        <h2>🤖 AI-інструменти для PM</h2>
+        <p>Практичне застосування Claude, ChatGPT та Mermaid</p>
+      </div>
+
+      <div class="callout teal">
+        <span class="callout-icon">🚀</span>
+        <div>AI не замінює критичне мислення — завжди перечитуй результат. Але значно прискорює рутинну роботу: специфікації, діаграми, документацію, тексти інтерфейсу.</div>
+      </div>
+
+      <h3>Mermaid-діаграми — User Flow за хвилини</h3>
+
+      <div class="callout yellow">
+        <span class="callout-icon">🧜</span>
+        <div><strong>Mermaid</strong> — текстовий формат для діаграм. Пишеш код → автоматично отримуєш схему. Не треба писати код вручну — генеруй через AI!</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Скачай спеку з Miro</h4>
+            <p>Клікни на PDF-файл специфікації в Miro → скачай до себе на комп.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Завантаж в AI + промт</h4>
+            <p>Завантаж PDF у Claude або ChatGPT. Використай промт (буде в матеріалах воркшопу): "Згенеруй Mermaid user flow для цієї специфікації".</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Отримай Mermaid-код</h4>
+            <p>Якщо отримав код — копіюй його. Якщо одразу діаграму — теж ок (ChatGPT Pro може одразу рендерити).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Вставляй у FigJam</h4>
+            <p>Відкрий FigJam → Ctrl+V (Command+V). FigJam автоматично конвертує Mermaid-код в editable діаграму. Розробники вас обожнюватимуть!</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Claude vs ChatGPT — що краще для чого</h3>
+      <table>
+        <thead><tr><th>Завдання</th><th>Рекомендація</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Написання/рефакторинг специфікацій</td>
+            <td><span class="tag purple">Claude</span> — чудово працює як BA, задає уточнюючі питання</td>
+          </tr>
+          <tr>
+            <td>Mermaid User Flow</td>
+            <td><span class="tag teal">ChatGPT</span> — стабільний результат, <span class="tag purple">Claude</span> іноді "перемудрює"</td>
+          </tr>
+          <tr>
+            <td>HTML-файли та конспекти</td>
+            <td><span class="tag purple">Claude</span> — дуже якісні HTML-файли з будь-яких матеріалів</td>
+          </tr>
+          <tr>
+            <td>Питання до специфікації</td>
+            <td><span class="tag purple">Claude</span> — запитай "які питання можуть задати розробники?" і "які assumptions ти враховував?"</td>
+          </tr>
+          <tr>
+            <td>Copy-тексти інтерфейсу</td>
+            <td>Обидва — за 2 секунди таблицю з текстами для всіх UI-станів</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>HTML-конспекти та міні-сайти</h3>
+      <div class="callout pink">
+        <span class="callout-icon">📝</span>
+        <div>
+          <strong>Домашнє завдання воркшопу:</strong> Зроби інтерактивний HTML-конспект з цього воркшопу!<br><br>
+          <strong>Алгоритм:</strong> Транскрипт дзвінку → Claude → HTML-файл → публікуй на GitHub Pages або в Notion.<br><br>
+          <strong>Корисно для:</strong> онбординг нових людей, документація зустрічей, шерінг знань в команді.
+        </div>
+      </div>
+
+      <h3>Claude Code (Cowork)</h3>
+      <p>Для тих, хто хоче глибше: <strong>Claude Code / Cowork</strong> — десктопний інструмент, що створює та зберігає файли на твоєму комп'ютері. Editable HTML, презентації, сайти. Аня зробила через нього сайт для Bootcamp.</p>
+
+      <div class="callout purple">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Важливо:</strong> Не намагайся автоматизувати все одразу. Почни з малого — один флоу, одна спека. Якщо вийде корисно — повторюй і покращуй. І не генеруй дизайн замість дизайнерів — це неетично.</div>
+      </div>
+    </section>
+
+    <!-- ═══════════ RETRO ═══════════ -->
+    <section id="retro" class="section">
+      <div class="section-header">
+        <h2>🔁 Ретроспектива</h2>
+        <p>Інсайти та плани учасниць воркшопу</p>
+      </div>
+
+      <h3>Головні інсайти</h3>
+      <div class="insights">
+        <div class="insight-card teal">
+          <div class="insight-name">Учасниця 1</div>
+          <div class="insight-text">Якісна специфікація — це економія часу та зусиль команди. Вона є основою класного результату.</div>
+        </div>
+        <div class="insight-card purple">
+          <div class="insight-name">Учасниця 2</div>
+          <div class="insight-text">Потрібно вчитися більше використовувати AI в роботі і розбиратись з продуктовим менеджментом.</div>
+        </div>
+        <div class="insight-card pink">
+          <div class="insight-name">Учасниця 3</div>
+          <div class="insight-text">Mermaid Flow Chart Syntax — буду генерувати завжди! Яка спека — такий і результат.</div>
+        </div>
+        <div class="insight-card yellow">
+          <div class="insight-name">Учасниця 4</div>
+          <div class="insight-text">AI дуже важливий і корисний інструмент, більше ніж я думала.</div>
+        </div>
+      </div>
+
+      <h3>Що застосую найближчим часом</h3>
+      <div class="accordion">
+        <div class="accordion-head" onclick="toggleAcc(this)">
+          📋 Плани учасниць <span class="accordion-arrow">▾</span>
+        </div>
+        <div class="accordion-body">
+          <ul style="padding-left:20px; color:var(--muted); font-size:14px; line-height:2.2">
+            <li>Спробувати промти для створення документації та схем</li>
+            <li>Підготувати персональні промти для планінгу в DevOps-задачах</li>
+            <li>Спробувати промт для створення ТЗ для дизайнера</li>
+            <li>Генерувати Mermaid Flow Chart для всіх нових спек</li>
+            <li>Написання ТЗ для різних задач на проекті</li>
+            <li>Пошукати промти для написання документації для команди</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Питання, що залишились</h3>
+      <div class="callout purple">
+        <span class="callout-icon">❓</span>
+        <div>
+          <strong>"Як впровадити AI у весь процес?"</strong><br><br>
+          Відповідь Ані: Починати з малого. Пройдіть флоу, який ми зробили сьогодні. Спека → Mermaid → User Flow → клікабельний прототип (якщо є бренд-кіт та Claude/Claude Code). По чуть-чуть — і буде вам щастя!
+        </div>
+      </div>
+
+      <blockquote>
+        "Просто брати і робити. Будь-який зворотній зв'язок — почини з малого. Не намагайтеся все автоматизувати одразу." — Аня
+      </blockquote>
+    </section>
+
+    <!-- ═══════════ CHECKLIST ═══════════ -->
+    <section id="checklist" class="section">
+      <div class="section-header">
+        <h2>✅ Чеклист PM</h2>
+        <p>Інтерактивний список для перевірки специфікацій та роботи з дизайнером</p>
+      </div>
+
+      <h3>Перед передачею спеки дизайнеру</h3>
+      <ul class="checklist" id="checklist-spec">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Усі user stories мають чіткі acceptance criteria</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Описані всі стани UI: default, hover, loading, error, empty, success</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Є screen flow / секвенс екранів</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Описані попапи та модальні вікна з контекстом, де вони з'являються</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Додані референси або приклади схожих рішень</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Враховані edge cases (кутові випадки)</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Є copy-документ з текстами UI</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Є пріоритизація: що MVP, що nice-to-have</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Відкриті питання виділені окремо і не залишені "всередині" тексту</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Специфікація зрозуміла не лише дизайнеру, а й розробнику і тестувальнику</span></li>
+      </ul>
+
+      <h3>Онбординг нового дизайнера</h3>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Дизайнер пройшов продукт як користувач</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Дизайнер зробив презентацію свого розуміння продукту</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Дизайнер ознайомлений з UIKit та дизайн-системою</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Є сеньор або ментор, до якого можна звертатись</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Налаштовані регулярні one-on-one та сесії рев'ю</span></li>
+      </ul>
+
+      <h3>Якість дизайну перед передачею в розробку</h3>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Всі екрани підписані та логічно зв'язані</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Є клікабельний прототип (або хоча б screen flow)</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Показані blank states для всіх порожніх сторінок</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Описана логіка чекбоксів та multiple-select дій</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Задизайнені всі модальні вікна з чітким контекстом</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>UIKit / design tokens включені в deliverable</span></li>
+      </ul>
+
+      <div class="callout teal" style="margin-top:24px">
+        <span class="callout-icon">💾</span>
+        <div>Відмітки зберігаються лише в межах поточної сесії. Скопіюй чеклист у свій Notion або роздрукуй для постійного використання.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleAcc(head) {
+    const body = head.nextElementSibling;
+    head.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+
+  function toggleCheck(box) {
+    box.classList.toggle('checked');
+    box.textContent = box.classList.contains('checked') ? '✓' : '';
+  }
+</script>
+
+</body>
+</html>
